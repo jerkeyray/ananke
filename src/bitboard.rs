@@ -1,5 +1,5 @@
 use std::fmt;
-use std::ops::{BitAnd, BitAndAssign, BitOr, BitOrAssign, BitXor, BitXorAssign, Not, Shl, Shr};
+use std::ops::{BitAnd, BitAndAssign, BitOr, BitOrAssign, BitXor, Not};
 
 /// represents a square on the board (0-63).
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
