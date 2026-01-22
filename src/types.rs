@@ -130,3 +130,64 @@ impl MoveList {
         self.moves[0..self.count].iter()
     }
 }
+
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+pub struct CastlingRights(pub u8);
+
+// Castling rights bit layout:
+// bit 0 = white kingside (K)
+// bit 1 = white queenside (Q)
+// bit 2 = black kingside (k)
+// bit 3 = black queenside (q)
+impl CastlingRights {
+    pub const WHITE_KINGSIDE: u8 = 1;
+    pub const WHITE_QUEENSIDE: u8 = 2;
+    pub const BLACK_KINGSIDE: u8 = 4;
+    pub const BLACK_QUEENSIDE: u8 = 8;
+
+    pub fn new() -> Self {
+        CastlingRights(0)
+    }
+
+    pub fn all() -> Self {
+        CastlingRights(0b1111)
+    }
+
+    pub fn remove(&mut self, mask: u8) {
+        self.0 &= !mask;
+    }
+
+    pub fn add_white_kingside(&mut self) {
+        self.0 |= Self::WHITE_KINGSIDE;
+    }
+
+    pub fn add_white_queenside(&mut self) {
+        self.0 |= Self::WHITE_QUEENSIDE;
+    }
+
+    pub fn add_black_kingside(&mut self) {
+        self.0 |= Self::BLACK_KINGSIDE;
+    }
+
+    pub fn add_black_queenside(&mut self) {
+        self.0 |= Self::BLACK_QUEENSIDE;
+    }
+
+    pub fn can_castle_kingside(&self, color: Color) -> bool {
+        match color {
+            Color::White => (self.0 & Self::WHITE_KINGSIDE) != 0,
+            Color::Black => (self.0 & Self::BLACK_KINGSIDE) != 0,
+        }
+    }
+
+    pub fn can_castle_queenside(&self, color: Color) -> bool {
+        match color {
+            Color::White => (self.0 & Self::WHITE_QUEENSIDE) != 0,
+            Color::Black => (self.0 & Self::BLACK_QUEENSIDE) != 0,
+        }
+    }
+
+    pub fn has_any(&self) -> bool {
+        self.0 != 0
+    }
+}
