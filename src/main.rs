@@ -1,18 +1,21 @@
-use ananke::movegen;
-use ananke::bitboard::Square;
+use ananke::board::Board;
+use ananke::magic;
+use ananke::movegen::MoveGenerator;
 
 fn main() {
-    // Test Knight on E4
-    let e4 = Square::new(28); // E4
-    let attacks = movegen::generate_knight_attacks(e4);
-    
-    println!("\nKnight on E4 attacks:");
-    println!("{}", attacks);
-    
-    // Test King on A1 (Corner Case)
-    let a1 = Square::new(0);
-    let king_attacks = movegen::generate_king_attacks(a1);
-    
-    println!("King on A1 attacks:");
-    println!("{}", king_attacks);
+    magic::initialize();
+
+    // 1. Start Position
+    let fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    let board = Board::from_fen(fen).unwrap();
+
+    println!("\nGenerating moves for start position...");
+    let movegen = MoveGenerator::new(&board);
+    let list = movegen.generate_all();
+
+    println!("Found {} moves:", list.count);
+    for m in list.iter() {
+        print!("{:?} ", m);
+    }
+    println!();
 }

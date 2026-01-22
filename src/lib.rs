@@ -1,4 +1,5 @@
 pub mod bitboard;
-pub mod types;
 pub mod board;
+pub mod magic;
 pub mod movegen;
+pub mod types;
